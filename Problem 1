@@ -1,0 +1,84 @@
+zwc@ZwcLinux:~$ cp -r q10 q13
+zwc@ZwcLinux:~$ cd q13
+zwc@ZwcLinux:~/q13$ cat > pyproject.toml <<'EOF'
+[build-system]
+requires = ["setuptools>=64.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "greetlab"
+version = "0.1.0"
+packages = ["greetlab"]
+package-dir = {"greetlab" = "src/greetlab"}
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-v"
+EOF
+zwc@ZwcLinux:~/q13$ mkdir -p src/greetlab
+cat > src/greetlab/core.py <<'EOF'
+def greet(name: str) -> str:
+    if not name.strip():
+        return "Hello!"
+    return f"Hello, {name}!"
+EOF
+zwc@ZwcLinux:~/q13$ cat > src/greetlab/__init__.py <<'EOF'
+from .core import greet
+
+__all__ = ["greet"]
+EOF
+zwc@ZwcLinux:~/q13$ mkdir -p tests
+cat > tests/test_greet.py <<'EOF'
+from greetlab import greet
+
+
+def test_greet_normal_name():
+    """正常姓名测试"""
+    result = greet("Alice")
+    assert result == "Hello, Alice!"
+
+
+def test_greet_blank_name():
+    """空白姓名测试：空字符串 / 全空格"""
+    assert greet("") == "Hello!"
+    assert greet("   ") == "Hello!"
+EOF
+zwc@ZwcLinux:~/q13$ cat > check.sh <<'EOF'
+#!/bin/bash
+set -e
+
+echo "=== ruff format --check ==="
+ruff format --check src tests
+
+echo -e "\n=== ruff check ==="
+ruff check src tests
+
+echo -e "\n=== pytest ==="
+PYTHONPATH=src pytest
+
+echo -e "\n✅ All checks passed"
+EOF
+zwc@ZwcLinux:~/q13$ chmod +x check.sh
+zwc@ZwcLinux:~/q13$ pip install ruff pytest
+Defaulting to user installation because normal site-packages is not writeable
+Collecting ruff
+  Downloading ruff-0.16.7-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (10.4 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.4/10.4 MB 11.2 MB/s eta 0:00:00
+Requirement already satisfied: pytest in /usr/lib/python3/dist-packages (6.2.5)
+Installing collected packages: ruff
+Successfully installed ruff-0.16.7
+zwc@ZwcLinux:~/q13$ ruff format src tests
+1 file reformatted, 3 files left unchanged
+zwc@ZwcLinux:~/q13$ ruff format --check src tests
+4 files already formatted
+zwc@ZwcLinux:~/q13$ ruff check src tests
+All checks passed!
