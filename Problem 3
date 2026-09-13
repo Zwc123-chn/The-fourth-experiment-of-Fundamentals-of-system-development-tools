@@ -1,0 +1,27 @@
+zwc@ZwcLinux:~$ mkdir -p q15
+zwc@ZwcLinux:~$ cd q15
+zwc@ZwcLinux:~/q15$ cat > packages.json <<'EOF'
+[
+  {"name":"alpha","status":"active","downloads":120,"version":"1.2.0"},
+  {"name":"beta","status":"inactive","downloads":900,"version":"2.0.0"},
+  {"name":"gamma","status":"active","downloads":450,"version":"1.5.1"},
+  {"name":"delta","status":"active","downloads":450,"version":"0.9.0"},
+  {"name":"epsilon","status":"active","downloads":80,"version":"3.1.0"}
+]
+EOF
+zwc@ZwcLinux:~/q15$ cat packages.json
+[
+  {"name":"alpha","status":"active","downloads":120,"version":"1.2.0"},
+  {"name":"beta","status":"inactive","downloads":900,"version":"2.0.0"},
+  {"name":"gamma","status":"active","downloads":450,"version":"1.5.1"},
+  {"name":"delta","status":"active","downloads":450,"version":"0.9.0"},
+  {"name":"epsilon","status":"active","downloads":80,"version":"3.1.0"}
+]
+zwc@ZwcLinux:~/q15$ cd q15
+bash: cd: q15: No such file or directory
+zwc@ZwcLinux:~/q15$ python3 -m http.server 8000
+Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+127.0.0.1 - - [14/Sep/2026 00:39:26] "GET /packages.json HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 00:41:17] "GET /packages.json HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 00:42:48] "GET /packages.json HTTP/1.1" 200 -
+
