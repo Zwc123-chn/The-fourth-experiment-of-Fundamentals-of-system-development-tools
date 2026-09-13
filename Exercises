@@ -78,3 +78,19 @@ EOF
 zwc@ZwcLinux:~/8$ chmod +x greet.sh
 zwc@ZwcLinux:~/8$ ./greet.sh
 Practice Missing Semester
+
+#练习九--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+wc@ZwcLinux:~$ mkdir -p 9
+zwc@ZwcLinux:~$ cd 9
+zwc@ZwcLinux:~/9$ cat > msg.txt <<'EOF'
+Hello {{USER}}
+EOF
+zwc@ZwcLinux:~/9$ cat > substitute.sh <<'EOF'
+#!/bin/bash
+sed 's/{{USER}}/learner/g' msg.txt > output.txt
+EOF
+zwc@ZwcLinux:~/9$ chmod +x substitute.sh
+zwc@ZwcLinux:~/9$ ./substitute.sh
+zwc@ZwcLinux:~/9$ cat output.txt
+Hello learner
