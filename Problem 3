@@ -24,4 +24,65 @@ Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
 127.0.0.1 - - [14/Sep/2026 00:39:26] "GET /packages.json HTTP/1.1" 200 -
 127.0.0.1 - - [14/Sep/2026 00:41:17] "GET /packages.json HTTP/1.1" 200 -
 127.0.0.1 - - [14/Sep/2026 00:42:48] "GET /packages.json HTTP/1.1" 200 -
+zwc@ZwcLinux:~$ cd ~/q15
+zwc@ZwcLinux:~/q15$ curl -fsS http://127.0.0.1:8000/packages.json
+[
+  {"name":"alpha","status":"active","downloads":120,"version":"1.2.0"},
+  {"name":"beta","status":"inactive","downloads":900,"version":"2.0.0"},
+  {"name":"gamma","status":"active","downloads":450,"version":"1.5.1"},
+  {"name":"delta","status":"active","downloads":450,"version":"0.9.0"},
+  {"name":"epsilon","status":"active","downloads":80,"version":"3.1.0"}
+]
+zwc@ZwcLinux:~/q15$ cat > api_report.sh <<'EOF'
+#!/bin/bash
+
+curl -fsS http://127.0.0.1:8000/packages.json | jq -s '
+  .[]
+  | select(.status == "active" and .downloads >= 100)
+' | jq -s 'sort_by(-.downloads, .name)' > tmp_filtered.json
+
+cat > summary.md <<MD
+# Package Active Summary
+
+| name  | version | downloads |
+|-------|---------|-----------|
+MD
+
+jq -r '.[] | "| \(.name) | \(.version) | \(.downloads) |"' tmp_filtered.json >> summary.md
+rm -f tmp_filtered.json
+EOF
+zwc@ZwcLinux:~/q15$ chmod +x api_report.sh
+zwc@ZwcLinux:~/q15$ ./api_report.sh
+jq: error (at <stdin>:7): Cannot index array with string "status"
+zwc@ZwcLinux:~/q15$ rm api_report.sh
+zwc@ZwcLinux:~/q15$ cat > api_report.sh <<'EOF'
+#!/bin/bash
+
+# 一次性jq：取出数组元素，筛选，排序（只1次jq，不要两次管道jq）
+curl -fsS http://127.0.0.1:8000/packages.json | jq '
+  .[]
+  | select(.status == "active" and .downloads >= 100)
+' | jq -s 'sort_by(-.downloads, .name)' > tmp_filtered.json
+
+# 生成markdown
+cat > summary.md <<MD
+# Package Active Summary
+
+| name  | version | downloads |
+|-------|---------|-----------|
+MD
+
+jq -r '.[] | "| \(.name) | \(.version) | \(.downloads) |"' tmp_filtered.json >> summary.md
+rm -f tmp_filtered.json
+EOF
+zwc@ZwcLinux:~/q15$ chmod +x api_report.sh
+zwc@ZwcLinux:~/q15$ ./api_report.sh
+zwc@ZwcLinux:~/q15$ cat summary.md
+# Package Active Summary
+
+| name  | version | downloads |
+|-------|---------|-----------|
+| delta | 0.9.0 | 450 |
+| gamma | 1.5.1 | 450 |
+| alpha | 1.2.0 | 120 |
 
