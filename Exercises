@@ -67,6 +67,21 @@ zwc@ZwcLinux:~/4$ curl -fsS http://127.0.0.1:8003/score.json | jq 'sort'
   27
 ]
 
+#练习六--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+zwc@ZwcLinux:~$ mkdir -p 6
+zwc@ZwcLinux:~$ cd 6
+zwc@ZwcLinux:~/6$ cat > create_files.sh <<'EOF'
+#!/bin/bash
+for i in 1 2 3 4; do
+  touch log$i.txt
+done
+EOF
+zwc@ZwcLinux:~/6$ chmod +x create_files.sh
+zwc@ZwcLinux:~/6$ ./create_files.sh
+zwc@ZwcLinux:~/6$ ls
+create_files.sh  log1.txt  log2.txt  log3.txt  log4.txt
+
 #练习八--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 zwc@ZwcLinux:~$ mkdir -p 8
