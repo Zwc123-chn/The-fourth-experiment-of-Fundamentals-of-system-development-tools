@@ -28,4 +28,21 @@ zwc@ZwcLinux:~/2$ curl -fsS http://127.0.0.1:8002/vegetable.json | jq '.[] | sel
   "weight": 5
 }
 
+#练习三--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+zwc@ZwcLinux:~$ mkdir -p 3
+zwc@ZwcLinux:~$ cd 3
+zwc@ZwcLinux:~/3$ cat > make_text.sh <<'EOF'
+#!/bin/bash
+cat > message.txt <<'TEXT'
+Hello
+Missing
+Semester
+TEXT
+EOF
+zwc@ZwcLinux:~/3$ chmod +x make_text.sh
+zwc@ZwcLinux:~/3$ ./make_text.sh
+zwc@ZwcLinux:~/3$ cat message.txt
+Hello
+Missing
+Semester
