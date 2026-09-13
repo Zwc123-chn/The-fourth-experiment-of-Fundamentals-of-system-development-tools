@@ -1,0 +1,36 @@
+zwc@ZwcLinux:~$ mkdir q14
+zwc@ZwcLinux:~$ cd q14
+zwc@ZwcLinux:~/q14$ cat > data.csv <<'EOF'
+name,value
+alpha,2
+beta,3
+gamma,5
+EOF
+zwc@ZwcLinux:~/q14$ cat > stats.py <<'EOF'
+import csv
+with open("data.csv") as f:
+    total = sum(int(r["value"]) for r in csv.DictReader(f))
+open("stats.txt", "w").write(str(total))
+EOF
+zwc@ZwcLinux:~/q14$ cat > build_report.py <<'EOF'
+text = open("report.md").read()
+total = open("stats.txt").read()
+open("report.txt", "w").write(f"{text}\nTotal: {total}\n")
+EOF
+zwc@ZwcLinux:~/q14$ cat > report.md <<'EOF'
+# Data Report
+EOF
+zwc@ZwcLinux:~/q14$ cat > Makefile <<'EOF'
+.PHONY: all clean
+
+all: report.txt
+
+stats.txt: stats.py data.csv
+        python3 stats.py
+
+report.txt: build_report.py report.md stats.txt
+        python3 build_report.py
+
+clean:
+        rm -f stats.txt report.txt
+EOF
