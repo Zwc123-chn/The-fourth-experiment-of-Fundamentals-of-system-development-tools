@@ -1,3 +1,4 @@
+#练习一--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 zwc@ZwcLinux:~$ mkdir -p 1
 zwc@ZwcLinux:~$ cd 1
 zwc@ZwcLinux:~/1$ cat > fruit.json <<'EOF'
@@ -9,5 +10,22 @@ Serving HTTP on 0.0.0.0 port 8001 (http://0.0.0.0:8001/) ...
 zwc@ZwcLinux:~$ cd ~/1
 zwc@ZwcLinux:~/1$ curl -fsS http://127.0.0.1:8001/fruit.json
 ["apple","banana","cherry"]
+
+#练习二--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+zwc@ZwcLinux:~$ mkdir -p 2
+zwc@ZwcLinux:~$ cd 2
+zwc@ZwcLinux:~/2$ cat > vegetable.json <<'EOF'
+[{"name":"tomato","weight":2},{"name":"potato","weight":5},{"name":"carrot","weight":1}]
+EOF
+zwc@ZwcLinux:~/2$ python3 -m http.server 8002
+Serving HTTP on 0.0.0.0 port 8002 (http://0.0.0.0:8002/) ...
+127.0.0.1 - - [14/Sep/2026 03:44:51] "GET /vegetable.json HTTP/1.1" 200 -
+zwc@ZwcLinux:~$ cd ~/2
+zwc@ZwcLinux:~/2$ curl -fsS http://127.0.0.1:8002/vegetable.json | jq '.[] | select(.weight > 2)'
+{
+  "name": "potato",
+  "weight": 5
+}
 
 
