@@ -66,3 +66,15 @@ zwc@ZwcLinux:~/4$ curl -fsS http://127.0.0.1:8003/score.json | jq 'sort'
   18,
   27
 ]
+
+#练习八--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+zwc@ZwcLinux:~$ mkdir -p 8
+zwc@ZwcLinux:~$ cd 8
+zwc@ZwcLinux:~/8$ cat > greet.sh <<'EOF'
+#!/bin/bash
+echo "Practice Missing Semester"
+EOF
+zwc@ZwcLinux:~/8$ chmod +x greet.sh
+zwc@ZwcLinux:~/8$ ./greet.sh
+Practice Missing Semester
