@@ -94,3 +94,36 @@ zwc@ZwcLinux:~/9$ chmod +x substitute.sh
 zwc@ZwcLinux:~/9$ ./substitute.sh
 zwc@ZwcLinux:~/9$ cat output.txt
 Hello learner
+
+#练习十--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+zwc@ZwcLinux:~$ mkdir -p 10
+zwc@ZwcLinux:~$ cd 10
+zwc@ZwcLinux:~/10$ cat > service.json <<'EOF'
+[{"service":"nginx","running":true},{"service":"redis","running":false},{"service":"mysql","running":true}]
+EOF
+zwc@ZwcLinux:~/10$ python3 -m http.server 8006
+Serving HTTP on 0.0.0.0 port 8006 (http://0.0.0.0:8006/) ...
+127.0.0.1 - - [14/Sep/2026 04:31:10] "GET /service.json HTTP/1.1" 200 -
+wc@ZwcLinux:~$ cd ~/10
+zwc@ZwcLinux:~/10$ cat > service_report.sh <<'EOF'
+#!/bin/bash
+curl -fsS http://127.0.0.1:8006/service.json | jq -s '[ .[] | select(.running == true) ]' > tmp.json
+cat > service.md <<MD
+# Service Status Report
+
+| service | running |
+|---------|---------|
+MD
+jq -r '.[] | "| \(.service) | \(.running) |"' tmp.json >> service.md
+rm tmp.json
+EOF
+zwc@ZwcLinux:~/10$ chmod +x service_report.sh
+zwc@ZwcLinux:~/10$ ./service_report.sh
+jq: error (at <stdin>:1): Cannot index array with string "running"
+zwc@ZwcLinux:~/10$ cat service.md
+# Service Status Report
+
+| service | running |
+|---------|---------|
+
