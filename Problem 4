@@ -1,1 +1,214 @@
+zwc@ZwcLinux:~$ cp -r q13 q16
+zwc@ZwcLinux:~$ cd q16
+zwc@ZwcLinux:~/q16$ rm -rf .git
+zwc@ZwcLinux:~/q16$ git init
+Initialized empty Git repository in /home/zwc/q16/.git/
+zwc@ZwcLinux:~/q16$ git add .
+zwc@ZwcLinux:~/q16$ git commit -m "q16: initial copy from q13"
+[main (root-commit) a76e228] q16: initial copy from q13
+ Committer: zwc <zwc@ZwcLinux.myguest.virtualbox.org>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
 
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 28 files changed, 141 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 UNKNOWN.egg-info/PKG-INFO
+ create mode 100644 UNKNOWN.egg-info/SOURCES.txt
+ create mode 100644 UNKNOWN.egg-info/dependency_links.txt
+ create mode 100644 UNKNOWN.egg-info/top_level.txt
+ create mode 100644 __pycache__/test_greet.cpython-310-pytest-6.2.5.pyc
+ create mode 100644 ai_log.md
+ create mode 100644 ai_shturl
+ create mode 100755 check.sh
+ create mode 100644 greetlab/__init__.py
+ create mode 100644 greetlab/__pycache__/__init__.cpython-310.pyc
+ create mode 100644 greetlab/__pycache__/main.cpython-310.pyc
+ create mode 100644 greetlab/cli.py
+ create mode 100644 greetlab/main.py
+ create mode 100644 greetlab_25030021128-0.1.0.dist-info/METADATA
+ create mode 100644 greetlab_25030021128-0.1.0.dist-info/RECORD
+ create mode 100644 greetlab_25030021128-0.1.0.dist-info/WHEEL
+ create mode 100644 greetlab_25030021128-0.1.0.dist-info/entry_points.txt
+ create mode 100644 greetlab_25030021128-0.1.0.dist-info/top_level.txt
+ create mode 100644 pyproject.toml
+ create mode 100644 src/greetlab/__init__.py
+ create mode 100644 src/greetlab/cli.py
+ create mode 100644 src/greetlab_25030021128.egg-info/PKG-INFO
+ create mode 100644 src/greetlab_25030021128.egg-info/SOURCES.txt
+ create mode 100644 src/greetlab_25030021128.egg-info/dependency_links.txt
+ create mode 100644 src/greetlab_25030021128.egg-info/entry_points.txt
+ create mode 100644 src/greetlab_25030021128.egg-info/top_level.txt
+ create mode 100644 test_greet.py
+zwc@ZwcLinux:~/q16$ cat > src/greetlab/__init__.py <<'EOF'
+def greet(name):
+    return "Hello, name!"
+EOF
+zwc@ZwcLinux:~/q16$ ./check.sh
+===== 1. ruff format --check (校验代码格式) =====
+7 files already formatted
+===== 2. ruff check (静态代码检查) =====
+All checks passed!
+===== 3. pytest (单元测试) =====
+====================================================================== test session starts ======================================================================
+platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/zwc/q16, configfile: pyproject.toml, testpaths: .
+plugins: anyio-4.12.1
+collected 2 items                                                                                                                                               
+
+test_greet.py::test_greet_normal_name PASSED                                                                                                              [ 50%]
+test_greet.py::test_greet_blank_name PASSED                                                                                                               [100%]
+
+======================================================================= 2 passed in 0.02s =======================================================================
+✅ 全部质量检查通过
+zwc@ZwcLinux:~/q16$ python3 -c "from greetlab import greet; print(repr(greet('Alice')))"
+'Hello, Alice!'
+zwc@ZwcLinux:~/q16$ find . -name "__pycache__" -type d -exec rm -rf {} +
+zwc@ZwcLinux:~/q16$ python3 -m pip uninstall -y greetlab
+WARNING: Skipping greetlab as it is not installed.
+zwc@ZwcLinux:~/q16$ cat > src/greetlab/__init__.py <<'EOF'
+def greet(name):
+    return "Hello, name!"
+EOF
+zwc@ZwcLinux:~/q16$ python3 -c "from greetlab import greet; print(repr(greet('Alice')))"
+'Hello, Alice!'
+zwc@ZwcLinux:~/q16$ cat > greetlab/__init__.py <<'EOF'
+def greet(name):
+    return "Hello, name!"
+EOF
+zwc@ZwcLinux:~/q16$ python3 -c "from greetlab import greet; print(repr(greet('Alice')))"
+'Hello, name!'
+zwc@ZwcLinux:~/q16$ ./check.sh
+===== 1. ruff format --check (校验代码格式) =====
+7 files already formatted
+===== 2. ruff check (静态代码检查) =====
+All checks passed!
+===== 3. pytest (单元测试) =====
+====================================================================== test session starts ======================================================================
+platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/zwc/q16, configfile: pyproject.toml, testpaths: .
+plugins: anyio-4.12.1
+collected 2 items                                                                                                                                               
+
+test_greet.py::test_greet_normal_name FAILED                                                                                                              [ 50%]
+test_greet.py::test_greet_blank_name FAILED                                                                                                               [100%]
+
+=========================================================================== FAILURES ============================================================================
+____________________________________________________________________ test_greet_normal_name _____________________________________________________________________
+
+    def test_greet_normal_name():
+>       assert greet("Alice") == "Hello, Alice!"
+E       AssertionError: assert 'Hello, name!' == 'Hello, Alice!'
+E         - Hello, Alice!
+E         + Hello, name!
+
+test_greet.py:5: AssertionError
+_____________________________________________________________________ test_greet_blank_name _____________________________________________________________________
+
+    def test_greet_blank_name():
+>       assert greet("") == "Hello, anonymous!"
+E       AssertionError: assert 'Hello, name!' == 'Hello, anonymous!'
+E         - Hello, anonymous!
+E         + Hello, name!
+
+test_greet.py:9: AssertionError
+==================================================================== short test summary info ====================================================================
+FAILED test_greet.py::test_greet_normal_name - AssertionError: assert 'Hello, name!' == 'Hello, Alice!'
+FAILED test_greet.py::test_greet_blank_name - AssertionError: assert 'Hello, name!' == 'Hello, anonymous!'
+======================================================================= 2 failed in 0.21s =======================================================================
+zwc@ZwcLinux:~/q16$ cat > src/greetlab/__init__.py <<'EOF'
+def greet(name):
+    if not name.strip():
+        return "Hello, anonymous!"
+    return f"Hello, {name}!"
+EOF
+zwc@ZwcLinux:~/q16$ ./check.sh
+===== 1. ruff format --check (校验代码格式) =====
+7 files already formatted
+===== 2. ruff check (静态代码检查) =====
+All checks passed!
+===== 3. pytest (单元测试) =====
+====================================================================== test session starts ======================================================================
+platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/zwc/q16, configfile: pyproject.toml, testpaths: .
+plugins: anyio-4.12.1
+collected 2 items                                                                                                                                               
+
+test_greet.py::test_greet_normal_name FAILED                                                                                                              [ 50%]
+test_greet.py::test_greet_blank_name FAILED                                                                                                               [100%]
+
+=========================================================================== FAILURES ============================================================================
+____________________________________________________________________ test_greet_normal_name _____________________________________________________________________
+
+    def test_greet_normal_name():
+>       assert greet("Alice") == "Hello, Alice!"
+E       AssertionError: assert 'Hello, name!' == 'Hello, Alice!'
+E         - Hello, Alice!
+E         + Hello, name!
+
+test_greet.py:5: AssertionError
+_____________________________________________________________________ test_greet_blank_name _____________________________________________________________________
+
+    def test_greet_blank_name():
+>       assert greet("") == "Hello, anonymous!"
+E       AssertionError: assert 'Hello, name!' == 'Hello, anonymous!'
+E         - Hello, anonymous!
+E         + Hello, name!
+
+test_greet.py:9: AssertionError
+==================================================================== short test summary info ====================================================================
+FAILED test_greet.py::test_greet_normal_name - AssertionError: assert 'Hello, name!' == 'Hello, Alice!'
+FAILED test_greet.py::test_greet_blank_name - AssertionError: assert 'Hello, name!' == 'Hello, anonymous!'
+======================================================================= 2 failed in 0.10s =======================================================================
+zwc@ZwcLinux:~/q16$ rm -rf greetlab
+zwc@ZwcLinux:~/q16$ cat > src/greetlab/__init__.py <<'EOF'
+def greet(name):
+    return "Hello, name!"
+EOF
+zwc@ZwcLinux:~/q16$ python3 -c "from greetlab import greet; print(repr(greet('Alice')))"
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'greetlab'
+zwc@ZwcLinux:~/q16$ cat > src/greetlab/__init__.py <<'EOF'
+def greet(name):
+    if not name.strip():
+        return "Hello, anonymous!"
+    return f"Hello, {name}!"
+EOF
+zwc@ZwcLinux:~/q16$ ./check.sh
+===== 1. ruff format --check (校验代码格式) =====
+4 files already formatted
+===== 2. ruff check (静态代码检查) =====
+All checks passed!
+===== 3. pytest (单元测试) =====
+====================================================================== test session starts ======================================================================
+platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/zwc/q16, configfile: pyproject.toml, testpaths: .
+plugins: anyio-4.12.1
+collected 0 items / 1 error                                                                                                                                     
+
+============================================================================ ERRORS =============================================================================
+________________________________________________________________ ERROR collecting test_greet.py _________________________________________________________________
+ImportError while importing test module '/home/zwc/q16/test_greet.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/usr/lib/python3.10/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+test_greet.py:1: in <module>
+    from greetlab import greet
+E   ModuleNotFoundError: No module named 'greetlab'
+==================================================================== short test summary info ====================================================================
+ERROR test_greet.py
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+======================================================================= 1 error in 0.11s ========================================================================
