@@ -212,3 +212,186 @@ E   ModuleNotFoundError: No module named 'greetlab'
 ERROR test_greet.py
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ======================================================================= 1 error in 0.11s ========================================================================
+zwc@ZwcLinux:~/q16$ PYTHONPATH=./src ./check.sh
+===== 1. ruff format --check (校验代码格式) =====
+4 files already formatted
+===== 2. ruff check (静态代码检查) =====
+All checks passed!
+===== 3. pytest (单元测试) =====
+====================================================================== test session starts ======================================================================
+platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/zwc/q16, configfile: pyproject.toml, testpaths: .
+plugins: anyio-4.12.1
+collected 2 items                                                                                                                                               
+
+test_greet.py::test_greet_normal_name PASSED                                                                                                              [ 50%]
+test_greet.py::test_greet_blank_name PASSED                                                                                                               [100%]
+
+======================================================================= 2 passed in 0.01s =======================================================================
+✅ 全部质量检查通过
+zwc@ZwcLinux:~/q16$ cat > Makefile <<'EOF'
+.PHONY: check build clean
+
+check:
+        PYTHONPATH=./src ./check.sh
+
+build:
+        python3 -m build
+
+clean:
+        rm -rf dist build *.egg-info src/*.egg-info
+EOF
+zwc@ZwcLinux:~/q16$ make check
+PYTHONPATH=./src ./check.sh
+===== 1. ruff format --check (校验代码格式) =====
+4 files already formatted
+===== 2. ruff check (静态代码检查) =====
+All checks passed!
+===== 3. pytest (单元测试) =====
+====================================================================== test session starts ======================================================================
+platform linux -- Python 3.10.12, pytest-6.2.5, py-1.10.0, pluggy-0.13.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/zwc/q16, configfile: pyproject.toml, testpaths: .
+plugins: anyio-4.12.1
+collected 2 items                                                                                                                                               
+
+test_greet.py::test_greet_normal_name PASSED                                                                                                              [ 50%]
+test_greet.py::test_greet_blank_name PASSED                                                                                                               [100%]
+
+======================================================================= 2 passed in 0.02s =======================================================================
+✅ 全部质量检查通过
+zwc@ZwcLinux:~/q16$ make build
+python3 -m build
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=61.0
+* Getting build dependencies for sdist...
+running egg_info
+creating src/greetlab.egg-info
+writing src/greetlab.egg-info/PKG-INFO
+writing dependency_links to src/greetlab.egg-info/dependency_links.txt
+writing requirements to src/greetlab.egg-info/requires.txt
+writing top-level names to src/greetlab.egg-info/top_level.txt
+writing manifest file 'src/greetlab.egg-info/SOURCES.txt'
+reading manifest file 'src/greetlab.egg-info/SOURCES.txt'
+writing manifest file 'src/greetlab.egg-info/SOURCES.txt'
+* Installed build dependency versions:
+  - setuptools==84.0.0
+* Building sdist...
+running sdist
+running egg_info
+writing src/greetlab.egg-info/PKG-INFO
+writing dependency_links to src/greetlab.egg-info/dependency_links.txt
+writing requirements to src/greetlab.egg-info/requires.txt
+writing top-level names to src/greetlab.egg-info/top_level.txt
+reading manifest file 'src/greetlab.egg-info/SOURCES.txt'
+writing manifest file 'src/greetlab.egg-info/SOURCES.txt'
+warning: sdist: standard file not found: should have one of README, README.rst, README.txt, README.md
+
+running check
+creating greetlab-0.1.0
+creating greetlab-0.1.0/src/greetlab
+creating greetlab-0.1.0/src/greetlab.egg-info
+copying files to greetlab-0.1.0...
+copying pyproject.toml -> greetlab-0.1.0
+copying src/greetlab/__init__.py -> greetlab-0.1.0/src/greetlab
+copying src/greetlab/cli.py -> greetlab-0.1.0/src/greetlab
+copying src/greetlab.egg-info/PKG-INFO -> greetlab-0.1.0/src/greetlab.egg-info
+copying src/greetlab.egg-info/SOURCES.txt -> greetlab-0.1.0/src/greetlab.egg-info
+copying src/greetlab.egg-info/dependency_links.txt -> greetlab-0.1.0/src/greetlab.egg-info
+copying src/greetlab.egg-info/requires.txt -> greetlab-0.1.0/src/greetlab.egg-info
+copying src/greetlab.egg-info/top_level.txt -> greetlab-0.1.0/src/greetlab.egg-info
+Writing greetlab-0.1.0/setup.cfg
+Creating tar archive
+removing 'greetlab-0.1.0' (and everything under it)
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=61.0
+* Getting build dependencies for wheel...
+running egg_info
+writing src/greetlab.egg-info/PKG-INFO
+writing dependency_links to src/greetlab.egg-info/dependency_links.txt
+writing requirements to src/greetlab.egg-info/requires.txt
+writing top-level names to src/greetlab.egg-info/top_level.txt
+reading manifest file 'src/greetlab.egg-info/SOURCES.txt'
+writing manifest file 'src/greetlab.egg-info/SOURCES.txt'
+* Installed build dependency versions:
+  - setuptools==84.0.0
+* Building wheel...
+running bdist_wheel
+running build
+running build_py
+creating build/lib/greetlab
+copying src/greetlab/cli.py -> build/lib/greetlab
+copying src/greetlab/__init__.py -> build/lib/greetlab
+running egg_info
+writing src/greetlab.egg-info/PKG-INFO
+writing dependency_links to src/greetlab.egg-info/dependency_links.txt
+writing requirements to src/greetlab.egg-info/requires.txt
+writing top-level names to src/greetlab.egg-info/top_level.txt
+reading manifest file 'src/greetlab.egg-info/SOURCES.txt'
+writing manifest file 'src/greetlab.egg-info/SOURCES.txt'
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_lib
+creating build/bdist.linux-x86_64/wheel
+creating build/bdist.linux-x86_64/wheel/greetlab
+copying build/lib/greetlab/cli.py -> build/bdist.linux-x86_64/wheel/./greetlab
+copying build/lib/greetlab/__init__.py -> build/bdist.linux-x86_64/wheel/./greetlab
+running install_egg_info
+Copying src/greetlab.egg-info to build/bdist.linux-x86_64/wheel/./greetlab-0.1.0-py3.10.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/greetlab-0.1.0.dist-info/WHEEL
+creating '/home/zwc/q16/dist/.tmp-c1zb3x63/greetlab-0.1.0-py3-none-any.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+adding 'greetlab/__init__.py'
+adding 'greetlab/cli.py'
+adding 'greetlab-0.1.0.dist-info/METADATA'
+adding 'greetlab-0.1.0.dist-info/WHEEL'
+adding 'greetlab-0.1.0.dist-info/top_level.txt'
+adding 'greetlab-0.1.0.dist-info/RECORD'
+removing build/bdist.linux-x86_64/wheel
+Successfully built greetlab-0.1.0.tar.gz and greetlab-0.1.0-py3-none-any.whl
+zwc@ZwcLinux:~/q16$ sha256sum dist/*.whl
+4b620b75a7a86e86e63155307df76d756b75f614301d449e0e4fbc93330a1f14  dist/greetlab-0.1.0-py3-none-any.whl
+zwc@ZwcLinux:~/q16$ git status
+On branch main
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   __pycache__/test_greet.cpython-310-pytest-6.2.5.pyc
+	deleted:    greetlab/__init__.py
+	deleted:    greetlab/__pycache__/__init__.cpython-310.pyc
+	deleted:    greetlab/__pycache__/main.cpython-310.pyc
+	deleted:    greetlab/cli.py
+	deleted:    greetlab/main.py
+	modified:   src/greetlab/__init__.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	Makefile
+	dist/
+	src/greetlab.egg-info/
+	src/greetlab/__pycache__/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+zwc@ZwcLinux:~/q16$ git add src/greetlab/__init__.py Makefile
+zwc@ZwcLinux:~/q16$ git commit -m "q16: add Makefile; break and fix greet(), build wheel artifact"
+[main 018133b] q16: add Makefile; break and fix greet(), build wheel artifact
+ Committer: zwc <zwc@ZwcLinux.myguest.virtualbox.org>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly:
+
+    git config --global user.name "Your Name"
+    git config --global user.email you@example.com
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 2 files changed, 14 insertions(+)
+ create mode 100644 Makefile
+zwc@ZwcLinux:~/q16$ 
+
