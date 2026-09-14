@@ -91,6 +91,21 @@ zwc@ZwcLinux:~/6$ ./create_files.sh
 zwc@ZwcLinux:~/6$ ls
 create_files.sh  log1.txt  log2.txt  log3.txt  log4.txt
 
+#练习七--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+zwc@ZwcLinux:~$ mkdir -p 7
+zwc@ZwcLinux:~$ cd 7
+zwc@ZwcLinux:~/7$ cat > books.json <<'EOF'
+["linux","git","shell"]
+EOF
+zwc@ZwcLinux:~/7$ python3 -m http.server 8005
+Serving HTTP on 0.0.0.0 port 8005 (http://0.0.0.0:8005/) ...
+127.0.0.1 - - [14/Sep/2026 08:39:24] "GET /books.json HTTP/1.1" 200 -
+
+zwc@ZwcLinux:~$ cd ~/7
+zwc@ZwcLinux:~/7$ curl -fsS http://127.0.0.1:8005/books.json | jq 'length'
+3
+
 #练习八--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 zwc@ZwcLinux:~$ mkdir -p 8
